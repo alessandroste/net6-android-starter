@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Ciao Android</string>
+    <string name="app_text">Ciao, .NET 6!</string>
+</resources>

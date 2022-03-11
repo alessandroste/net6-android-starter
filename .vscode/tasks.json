@@ -1,0 +1,100 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "dotnet build ${input:project} -t:${input:target} -p:Configuration=${input:configuration} -p:AndroidAttachDebugger=true -p:AndroidSdbHostPort=10000",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "silent",
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Run (Watch)",
+      "type": "shell",
+      "command": "dotnet watch run --project ${input:project} -- /t:${input:target} /p:TargetFramework=${input:targetframework} /p:Configuration=${input:configuration} /p:AndroidAttachDebugger=${input:attach} /p:AndroidSdbHostPort=10000",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "silent",
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Emulator",
+      "type": "process",
+      "isBackground": true,
+      "command": "emulator.exe",
+      "options": {
+        "cwd": "${env:ANDROID_SDK_ROOT}/emulator"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "clear": true
+      },
+      "args": [
+        "-avd",
+        "Android_Emulator_31",
+        "-gpu",
+        "on"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "configuration",
+      "type": "pickString",
+      "default": "Debug",
+      "description": "Select msbuild Build Configuration.",
+      "options": [
+        "Debug",
+        "Release"
+      ]
+    },
+    {
+      "id": "project",
+      "type": "pickString",
+      "default": "MyApp.Android/MyApp.Android.csproj",
+      "description": "Pick the Project you want to build.",
+      "options": [
+        "MyApp.Android/MyApp.Android.csproj"
+      ]
+    },
+    {
+      "id": "target",
+      "type": "pickString",
+      "default": "Build",
+      "description": "Select MSBuild Target to run.",
+      "options": [
+        "Build",
+        "Install",
+        "Run",
+        "Clean"
+      ]
+    },
+    {
+      "id": "targetframework",
+      "type": "pickString",
+      "default": "net6.0-android",
+      "description": "Select TargetFramework",
+      "options": [
+        "net6.0-android",
+      ]
+    }
+  ]
+}
